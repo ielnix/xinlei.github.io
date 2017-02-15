@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>兄弟控制器之间的通讯</title>
+	<script src='./libs/angular.min.js'></script>
+</head>
+<body>
+	<div ng-app='app'>
+		<div ng-controller='parent'>
+			<div ng-controller='son1'>
+				<p>text:{{info}}</p>
+			</div>
+			<div ng-controller='son2'>
+				<p>text:{{info}}</p>
+				<button ng-click='pass()'>toSon1: son2</button>
+			</div>
+		</div>
+	</div>
+	<script>
+		var app=angular.module('app',[]);
+		/**
+		 * 利用父控制器，子控制器向父控制器向上广播，父控制器再向下广播
+		 * 从而实现兄弟之间的通讯
+		 */
+		
+
+		app.controller('parent',['$scope',function($scope){
+			$scope.$on('pass',function(e,newInfo){
+				$scope.info=newInfo;
+				$scope.toChild();
+			});
+			$scope.toChild=function(){
+				$scope.$broadcast('toChild',$scope.info);
+			}
+		}]);
+
+		app.controller('son1',['$scope',function($scope){
+			$scope.info='son1';
+			$scope.$on('toChild',function(e,newInfo){
+				$scope.info=newInfo;
+			})
+		}]);
+		
+		app.controller('son2',['$scope',function($scope){
+			$scope.info='son2';
+			$scope.pass=function(){
+				$scope.$emit('pass',$scope.info);
+			}
+		}]);
+		
+	</script>
+</body>
+</html>

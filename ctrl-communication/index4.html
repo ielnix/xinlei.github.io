@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>angular服务的方式通讯</title>
+	<script src='libs/angular.min.js'></script>
+</head>
+<body>
+	<div ng-app='app'>
+		<div ng-controller='main'>
+			<input type="text" ng-model='test'>
+			<button ng-click='change()'>点击</button>
+		</div>
+		<div ng-controller='side'>
+			<div ng-click='add()'>添加的内容：{{name}}</div>
+		</div>
+	</div>
+	<script>
+		/**
+		 * ng中服务器是一个单例，在服务器中生成一个对象，利用依赖注入的方式在所有的控制器中共享
+		 * 在一个控制器中修改了服务对象的值，在另一个控制器中获取到修改后的值
+		 */
+		var app=angular.module('app',[]);
+		app.factory('instance',function(){
+			return {};
+		});
+		app.controller('main',['$scope','instance',function($scope,instance){
+			$scope.change=function(){
+				instance.name=$scope.test;
+			}
+		}]);
+		app.controller('side',['$scope','instance',function($scope,instance){
+			$scope.add=function(){
+				$scope.name=instance.name;
+			}
+
+		}]);
+	</script>
+</body>
+</html>

@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>父子控制器的通讯</title>
+	<script src='libs/angular.min.js'></script>
+</head>
+<body ng-app='app'>
+	<div ng-controller='parent'>
+		<p>data==>{{info}}</p>
+		<button ng-click="move('this is parent')">parent</button>
+		<div ng-controller="child">
+			<p>data==>{{info}}</p>
+			<button ng-click='set("this is child")'>child</button>
+		</div>
+	</div>
+	<script>
+		/**
+		 * 作用域上面的值为基本类型的时候
+		 * 基于js原型的继承方式，父作用域上面的值会影响子作用域，修改子作用域只会影响子作用域的值，不会影响父级
+		 * @type {[type]}
+		 */
+		var app=angular.module('app',[]);
+		app.controller("parent",['$scope',function ($scope){
+			$scope.info='init';
+			$scope.move=function(newInfo){
+				$scope.info=newInfo;
+			}
+		}]);
+		app.controller("child",['$scope',function ($scope){
+			$scope.set=function(newInfo){
+				$scope.info=newInfo;
+			}
+		}]);
+	</script>
+	<div ng-controller='Parent'>
+		<p>data==>{{obj.info}}</p>
+		<button ng-click="move('this is parent')">parent</button>
+		<div ng-controller="Child">
+			<p>data==>{{obj.info}}</p>
+			<button ng-click='set("this is child")'>child</button>
+		</div>
+	</div>
+	<script>
+		/**
+		 * 如果作用域的值是对象的话，js对象都是引用类型
+		 * 任何一方修改都能影响另一方
+		 */
+		app.controller("Parent",['$scope',function ($scope){
+			$scope.obj={info:'init'};
+			$scope.move=function(newInfo){
+				$scope.obj.info=newInfo;
+			}
+		}]);
+		app.controller("Child",['$scope',function ($scope){
+			$scope.set=function(newInfo){
+				$scope.obj.info=newInfo;
+			}
+		}]);
+	</script>
+</body>
+</html>

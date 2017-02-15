@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>$on $emit $boardcast</title>
+	<script src='libs/angular.min.js'></script>
+</head>
+<body>
+	<div ng-app='app'>
+	<!-- 向上广播 -->
+		<div ng-controller='parent'>
+			<p>父级信息：{{info}}</p>
+			<div ng-controller='child'>
+				<p>子级信息:{{info}}</p>
+				<button ng-click="summon()">summon childInfo</button>
+			</div>
+		</div>
+	
+	<script>
+		var app=angular.module('app',[]);
+		// 子作用域向父作用域广播     
+		app.controller('parent',['$scope',function($scope){
+			$scope.info='parentInfo';
+			// 父级用$on监听
+			$scope.$on('summon',function(e,newInfo){
+				$scope.info=newInfo;
+			});
+		}]);
+		app.controller('child',['$scope',function($scope){
+			$scope.info='childInfo';
+			$scope.summon=function(){
+				// 子级用$emit 向上广播
+				$scope.$emit('summon',$scope.info);
+			}
+		}]);
+	</script>
+		<!-- 向下广播 -->
+		<div ng-controller='Parent'>
+				<p>父级信息：{{info}}</p>
+				<button ng-click="pass()">pass parentInfo</button>
+				<div ng-controller='Child'>
+					<p>子级信息:{{info}}</p>	
+				</div>
+			</div>
+		</div>
+	</div>
+	<script>
+		app.controller('Parent',['$scope',function($scope){
+			$scope.info='parentInfo';
+			$scope.pass=function(){
+				// 父级用$broadcast 向下广播
+				$scope.$broadcast('pass',$scope.info);
+			}
+		}]);
+		app.controller('Child',['$scope',function($scope){
+			$scope.info='childInfo';
+			// 子级用$on监听
+			$scope.$on('pass',function(e,newInfo){
+				$scope.info=newInfo;
+			});
+		}]);
+	</script>
+</body>
+</html>
