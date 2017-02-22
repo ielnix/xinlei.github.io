@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+	<script src='../ctrl-communication/libs/angular.min.js'></script>
+	<script>
+	angular.module('docsTimeDirective',[])
+		.controller('Controller',['$scope',function($scope){
+			$scope.format='M/dd/yyyy h:mm:ss a';
+		}])
+		.directive('myClock',['$interval','$filter','$log',function($interval,$filter,$log){
+			return {
+				scope:{
+					// 本地作用域数据双向绑定
+					myFormat:'='
+				},
+				link:function(scope,elem,attrs){
+					function updateTime(){
+						// elem可以操作该dom元素及其子元素  
+						elem.text($filter('date')(new Date(),scope.myFormat));
+					}
+					// 注册监听器
+					scope.$watch('myFormat',function(newValue){
+						$log.info('value changed to ' + newValue);
+						updateTime();
+					})
+					$interval(function(){
+						updateTime();
+					},1000);
+				}
+			}
+		}])
+	</script>
+</head>
+<body ng-app='docsTimeDirective'>
+	<div ng-controller='Controller'>
+		时间格式：<input ng-model='format'><br>
+		当前时间：<span my-clock my-format='format'></span>
+	</div>
+</body>
+</html>
