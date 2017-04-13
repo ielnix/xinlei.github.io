@@ -1,24 +1,24 @@
-#AngularJS总结
+# AngularJS总结
 
-##AngularJS介绍
+## AngularJS介绍
 
-###MVC
+### MVC
 
 MVC==>模型(Model)、视图(View)、控制器(Controller) 
 
-##模块化
+## 模块化
 
-###定义应用
+### 定义应用
 
 ng-app: 可以为任一HTML标签添加该属性，该标签包裹的内容都属于应用(App)的一部分
 
-###定义模块
+### 定义模块
 
 ```js
 var App = angular.module('App',[]);
 ```
 
-###定义控制器
+### 定义控制器
 
 ```js
 App.controller('DemoController',['$scope',function($scope){
@@ -29,9 +29,9 @@ App.controller('DemoController',['$scope',function($scope){
 
 以上就是AngularJS的工作模式
 
-##指令
+## 指令
 
-###内置指令
+### 内置指令
 
 - ng-app: 指定应用根元素，至少有一个元素指定了此属性
 - ng-controller: 指定控制器
@@ -46,7 +46,7 @@ App.controller('DemoController',['$scope',function($scope){
 - ng-readyonly 表单只读
 - ng-checked 单/复选框表单选中状态
 
-###自定义指令
+### 自定义指令
 
 ```js
 var App=angular.module('App',[]);
@@ -61,17 +61,17 @@ App.directive('tag',function(){
 })
 ```
 
-##数据绑定
+## 数据绑定
 
 AngularJS是以数据作为驱动的MVC框架，所有模型（Model）里的数据经由控制器（Controller）展示到视图（View）中。
 
 所谓数据绑定指的就是将模型（Model）中的数据与相应的视图（View）进行关联，分为单向绑定和双向绑定两种方式
 
-###单向绑定
+### 单向绑定
+ 
+### 双向绑定
 
-###双向绑定
-
-###相关指令
+### 相关指令
 
 ng-bind的简写是{{}}，添加ng-cloak可以解决{{}}绑定数据出现的闪烁现象，通过ng-bind-template可以绑定多个数据
 
@@ -83,21 +83,21 @@ ng-repeat 将数组或者对象数据迭代到视图模板
 
 ng-switch、on、ng-switch-when 可以对数据进行筛选
 
-##作用域
+## 作用域
 
 每个控制器对应一个模型也就是$scope对象，不同层级的控制器下的$scope便产生了作用域
 
-###根作用域
+### 根作用域
 
 $rootScope
 
-###子作用域
+### 子作用域
 
 ng-controller创建出来的一个子作用域
 
-##过滤器
+## 过滤器
 
-###内置过滤器
+### 内置过滤器
 
 1. currency
 2. data
@@ -109,7 +109,7 @@ ng-controller创建出来的一个子作用域
 8. number
 9. orderBy
 
-###自定义过滤器
+### 自定义过滤器
 
 ```js
 var App=angular.module('App',[]);
@@ -120,15 +120,15 @@ App.filter('capitlize',funciton(){
 })
 ```
 
-##依赖注入
+## 依赖注入
 
 依赖注入是指在运行时自动查找依赖关系，然后将查找到依赖传递给使用者的一种机制
 
-###推断式注入
+### 推断式注入
 
 不推荐使用，压缩会造成依赖找不到
 
-###行内注入
+### 行内注入
 
 ```js
 var App=angular.module('App',['$scope','$rootScope',function($scope,$rootScope){
@@ -136,9 +136,9 @@ var App=angular.module('App',['$scope','$rootScope',function($scope,$rootScope){
 }]);
 ```
 
-##服务
+## 服务
 
-###内置服务
+### 内置服务
 
 1. $location是对原生JavaScript中location对象属性和方法的封装
 
@@ -195,7 +195,7 @@ App.controller('DemoController',['$scope','$http',function($scope,$http){
 
 同时还支持多种快捷方式如$http.get()、$http.post()、$http.jsonp()。
 
-###自定义服务
+### 自定义服务
 
 1. factory方法
 
@@ -222,9 +222,9 @@ App.service('showTime',['$filter',function($filter){
 App.value('author','itcast');
 ```
 
-##模块加载
+## 模块加载
 
-###配置块
+### 配置块
 
 ```js
 App.config(['$logProvider',function($logProvider){
@@ -232,7 +232,7 @@ App.config(['$logProvider',function($logProvider){
 }]);
 ```
 
-###运行块
+### 运行块
 
 ```js
 App.run(['$http','$rootScope',funciton($http,$rootScope){
@@ -247,11 +247,11 @@ App.run(['$http','$rootScope',funciton($http,$rootScope){
 
 run方法是最先执行的，利用这一特点我们可以将一些需要优先执行的功能通过run方法来运行。
 
-##路由
+## 路由
 
-###SPA单页
+### SPA单页
 
-###路由
+### 路由
 
 ```js
 <!DOCTYPE html>
@@ -284,7 +284,7 @@ run方法是最先执行的，利用这一特点我们可以将一些需要优�
 </html>
 ```
 
-###路由参数
+### 路由参数
 
 1. when otherwise
 2. 第一个参数为字符串 代表hash值
@@ -296,13 +296,13 @@ run方法是最先执行的，利用这一特点我们可以将一些需要优�
 	- redirectTo 跳转其它路由
 4. 获取参数，在控制中注入$routeParams可以获取传递的参数
 
-##其它
+## 其它
 
-###jQuery
+### jQuery
 
 在没有引入jQuery的前提下AngularJS实现了简版的jQuery Lite，通过angular.element不能选择元素，但可以将一个DOM元素转成jQuery对象，如果引提前引入了jQuery则angular.element则完全等于jQuery。
 
-###bower
+### bower
 
 基于NodeJS的一个静态资源管理工具，由twitter公司开发维护，解决大型网站中静态资源的依赖问题。
 
